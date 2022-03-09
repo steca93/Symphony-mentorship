@@ -1,12 +1,10 @@
 # Symphony mentorship project
 
----
 
 Tasks and mentorship on all aspects of automation testing. We'll cover SQL, DB connection and gathering data...
 
 ## DB & SQL
 
----
 
 For database model we user [NorthWind](https://docs.yugabyte.com/latest/sample-data/northwind/)
 
