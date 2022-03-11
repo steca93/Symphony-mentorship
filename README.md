@@ -24,4 +24,5 @@ For SQL practice [SQL Bolt](https://sqlbolt.com/lesson/select_queries_introducti
    - ResultSet
    - Data transfer object
    - Mapping
+   - Running SQL commands (bulk) thorough .sql file [mybatis](https://mybatis.org/mybatis-3/)
 
