@@ -1,6 +1,6 @@
 package DBPractice;
 
-public class ResultDto {
+public class MostEfficientEmployeeDto {
 
     private String productName;
     private String employeeName;
@@ -32,7 +32,7 @@ public class ResultDto {
 
     @Override
     public String toString() {
-        return "ResultDto{" +
+        return "MostEfficientEmployeeDto{" +
                 "productName='" + productName + '\'' +
                 ", employeeName='" + employeeName + '\'' +
                 ", ordersCount=" + ordersCount +

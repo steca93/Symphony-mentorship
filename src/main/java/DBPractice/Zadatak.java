@@ -1,12 +1,18 @@
 package DBPractice;
 
+import org.apache.ibatis.jdbc.ScriptRunner;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Zadatak {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/NorthWind", "postgres" ,"421401pizza")) {
             String variedCategory = "Varied";
@@ -16,20 +22,19 @@ public class Zadatak {
             int beveragesCategoryId = getCategoryId(connection, beveragesCategory);
             updateCategoriesInProductsTable(connection, newCategoryId, beveragesCategoryId);
             ResultSet rs = getLastResults(connection, variedCategory);
-            List<ResultDto> results = new ArrayList<>();
+            List<MostEfficientEmployeeDto> results = new ArrayList<>();
             while (rs.next()) {
-                ResultDto r = new ResultDto();
+                MostEfficientEmployeeDto r = new MostEfficientEmployeeDto();
                 r.setProductName(rs.getString("product_name"));
                 r.setEmployeeName(rs.getString("employee_name"));
                 r.setOrdersCount(rs.getInt("ukupno_ordera"));
                 results.add(r);
             }
 
-            for (ResultDto r : results) {
+            for (MostEfficientEmployeeDto r : results) {
                 System.out.println(r.toString());
             }
-
-            restoreDBToPreviousState(connection, newCategoryId, beveragesCategoryId);
+            restoreDB(connection);
         }
     }
 
@@ -83,5 +88,14 @@ public class Zadatak {
         preparedStatement = connection.prepareStatement("DELETE FROM categories WHERE category_id = ?");
         preparedStatement.setInt(1, newCategory);
         preparedStatement.execute();
+    }
+
+    private static void restoreDB(Connection connection) throws FileNotFoundException {
+        ScriptRunner sr = new ScriptRunner(connection);
+        //Creating a reader object
+        Reader reader = new BufferedReader(new FileReader("./src/main/resources/restoreNorthWindDB.sql"));
+        //Running the script
+        sr.setLogWriter(null);
+        sr.runScript(reader);
     }
 }
